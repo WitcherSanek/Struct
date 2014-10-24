@@ -7,7 +7,7 @@ const double FAIL_POP=13.666;
 struct stackt
 {
     int Count=-99;
-    double* value=new double;
+    double* value;
 };
 
 int stack_push(stackt *st,double value)
@@ -36,31 +36,37 @@ double stack_pop(stackt *st)
     }
 }
 
-double mul(stackt *st)//a*b
+/*double mul(stackt *st)//a*b
 {
 
     double a=st->value[--st->Count];
     double b=st->value[--st->Count];
     st->value[st->Count++]=a*b;
     return 0;
-}
+}*/
 
 void stack_ctor(stackt *st)
 {
     st->Count=0;
-//st->value=new double;
+st->value=(double*) calloc (1,sizeof(double));
 }
 
 void stack_dtor(stackt *st)
 {
     st->Count=-2;
-
+free(st->value);
 }
 
 void stack_print(stackt *st)
 {
     for(int i=st->Count-1;i>=0;i--)printf("COUNT=%d VALUE=%lg\n",i,st->value[i]);
 if (st->Count<0)printf("STRUCT IS EMPTY OR ISNT CREATED!\n");
+}
+
+int stack_ok(stackt *st)
+{
+    if ((st->Count>=0)&&(st->value!=NULL))return 0;
+    return 1;
 }
 
 int main()
@@ -77,7 +83,10 @@ int main()
         command[1]='\0';
         command[2]='\0';
         command[3]='\0';
-        for (int i=0; i<4; i++)
+        command[4]='\0';
+        command[5]='\0';
+        command[6]='\0';
+        for (int i=0; i<7; i++)
         {
             scanf("%c",&c);
             if((c!='\n')&&(c!=' '))
@@ -98,9 +107,9 @@ int main()
             forpop=stack_pop(&st);
             if (forpop!=FAIL_POP)printf("%lg\n",forpop);
         }
-
-if(command[0]=='c'&&command[1]=='r'&&command[2]=='e'&&command[3]=='a')stack_ctor(&st);
-if(command[0]=='d'&&command[1]=='e'&&command[2]=='s'&&command[3]=='t')stack_dtor(&st);
+if(command[0]=='o'&&command[1]=='k')printf("%d\n",stack_ok(&st));
+if(command[0]=='c'&&command[1]=='r'&&command[2]=='e'&&command[3]=='a'&&command[4]=='t'&&command[5]=='e')stack_ctor(&st);
+if(command[0]=='d'&&command[1]=='e'&&command[2]=='s'&&command[3]=='t'&&command[4]=='r'&&command[5]=='o'&&command[6]=='y')stack_dtor(&st);
 if(command[0]=='l'&&command[1]=='o'&&command[2]=='g')stack_print(&st);
 
     }
